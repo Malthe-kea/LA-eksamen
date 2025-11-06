@@ -1,4 +1,4 @@
-package Sirens;
+package org.example.lasirener.Sirens;
 
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;

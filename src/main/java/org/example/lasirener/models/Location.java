@@ -1,4 +1,4 @@
-package models;
+package org.example.lasirener.models;
 
 public class Location {
 

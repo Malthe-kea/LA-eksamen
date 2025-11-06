@@ -1,6 +1,6 @@
-package models;
+package org.example.lasirener.models;
 
-import models.enums.FireStatus;
+import org.example.lasirener.models.enums.FireStatus;
 
 import java.util.Date;
 import java.util.List;

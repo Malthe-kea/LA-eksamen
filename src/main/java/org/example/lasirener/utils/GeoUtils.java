@@ -1,6 +1,6 @@
-package utils;
+package org.example.lasirener.utils;
 
-import models.Location;
+import org.example.lasirener.models.Location;
 
 public class GeoUtils {
     static final int EARTH_RADIUS_KM = 6371;

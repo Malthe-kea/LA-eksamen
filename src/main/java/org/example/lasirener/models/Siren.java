@@ -1,6 +1,6 @@
-package models;
+package org.example.lasirener.models;
 
-import models.enums.SirenStatus;
+import org.example.lasirener.models.enums.SirenStatus;
 
 import java.util.Date;
 
