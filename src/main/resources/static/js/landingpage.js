@@ -1,29 +1,52 @@
-const app = document.getElementById("app");
+import { listOfAllFires } from "./fires.js";
 
+const app = document.getElementById("app");
 renderPage();
 
 export async function renderPage() {
 
-    console.log("Jeg er i renderPage")
     app.innerHTML = "";
-    let movies;
 
+    console.log("Jeg er i renderPage");
+
+    // Append header
+    const header = createHeader();
+    app.appendChild(header);
+
+    // Tilføj klik-event på Fires-nav
+    const firesLink = header.querySelector('a[href="#fires"]');
+    firesLink.addEventListener("click", async (e) => {
+        e.preventDefault(); // undgå scroll til #fires
+        await showAllFires();
+    });
+}
+
+// Funktion til at hente og vise alle fires
+async function showAllFires() {
+    app.innerHTML = ""; // clear previous content
+    app.appendChild(createHeader()); // beholder header
+
+    let fires;
     try {
-        const response = await fetch("http://localhost:8080/api/v1/fires");
-        if (!response.ok) {
-            throw new Error("Fires not found");
-        }
-        movies = await response.json();
+        fires = await listOfAllFires();
     } catch (err) {
-        app.innerHTML = `<p>${err.message}</p>`;
+        app.innerHTML += `<p>Fejl ved hentning af brande: ${err.message}</p>`;
         return;
     }
 
-    // Clear app content
-    app.innerHTML = "";
+    if (fires.length === 0) {
+        app.innerHTML += `<p>Ingen aktive brande lige nu.</p>`;
+        return;
+    }
 
-    // Append components
-    app.appendChild(createHeader());
+    const list = document.createElement("ul");
+    fires.forEach(fire => {
+        const li = document.createElement("li");
+        li.textContent = `ID: ${fire.id}, Location: ${fire.location}, Status: ${fire.status}`;
+        list.appendChild(li);
+    });
+
+    app.appendChild(list);
 }
 
 export function createHeader() {
@@ -57,6 +80,5 @@ export function createHeader() {
     header.appendChild(logo);
     header.appendChild(nav);
 
-    // Return header to be appended to the page
     return header;
 }
