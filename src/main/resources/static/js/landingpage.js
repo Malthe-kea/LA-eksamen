@@ -1,13 +1,11 @@
-
-
 const app = document.getElementById("app");
 
-app.innerHTML = "";
+renderPage();
 
 export async function renderPage() {
 
-    loadStylesheet("/css/landingpageStyle.css");
-
+    console.log("Jeg er i renderPage")
+    app.innerHTML = "";
     let movies;
 
     try {
@@ -26,18 +24,39 @@ export async function renderPage() {
 
     // Append components
     app.appendChild(createHeader());
-
 }
 
 export function createHeader() {
     const header = document.createElement("header");
     header.className = "site-header";
 
+    // Logo
     const logo = document.createElement("img");
     logo.className = "logo";
-    logo.src ="/pictures/logo.png"
+    logo.src = "/pictures/logo.png";
+    logo.alt = "Site Logo";
 
-    }
-
+    // Navigation
     const nav = document.createElement("nav");
     const ul = document.createElement("ul");
+
+    const navItems = ["Home", "About", "Fires", "Contact"];
+
+    navItems.forEach(item => {
+        const li = document.createElement("li");
+        const a = document.createElement("a");
+        a.href = `#${item.toLowerCase()}`;
+        a.textContent = item;
+        li.appendChild(a);
+        ul.appendChild(li);
+    });
+
+    nav.appendChild(ul);
+
+    // Assemble header
+    header.appendChild(logo);
+    header.appendChild(nav);
+
+    // Return header to be appended to the page
+    return header;
+}
