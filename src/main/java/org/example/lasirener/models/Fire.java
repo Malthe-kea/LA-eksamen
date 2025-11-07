@@ -11,24 +11,26 @@ public class Fire {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    int id;
+    private int id;
 
     @Column(nullable = true)
-    double latitude;
+    private double latitude;
 
     @Column(nullable = true)
-    double longitude;
+    private double longitude;
 
     @Column(nullable = false)
-    Date detectedAt;
+    private Date detectedAt;
 
+    @Enumerated(EnumType.STRING)
     @Column(nullable = false)
-    FireStatus status;
+    private FireStatus status;
 
     @Column(nullable = true)
-    Date closedAt;
+    private Date closedAt;
 
-    List<Fire>
+
+    //private List<Fire> activatedFires;
 
 
 

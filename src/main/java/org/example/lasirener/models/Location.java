@@ -1,11 +1,25 @@
 package org.example.lasirener.models;
 
+import jakarta.persistence.*;
+
+@Entity
 public class Location {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private int id;
+    @Column(nullable = false)
     double longitude;
+    @Column(nullable = false)
     double latitude;
 
+    public Location(int latitude, int longitude) {
+        this.latitude = latitude;
+        this.longitude = longitude;
+    }
+
     public Location() {
+
     }
 
     public double getLongitude() {

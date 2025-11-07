@@ -1,18 +1,32 @@
 package org.example.lasirener.models;
 
+import jakarta.persistence.*;
 import org.example.lasirener.models.enums.SirenStatus;
 
 import java.util.Date;
 
+@Entity
 public class Siren {
-
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     int id;
+
+    @Column()
     String name;
+
+    @Column
     double latitude;
+
+    @Column
     double longitude;
+
+    @Column(nullable = false)
     SirenStatus status;
+
+    @Column
     boolean disabled;
 
+    @Column
     Date lastUpdated;
 
     public Siren(int id, String name, double latitude, double longitude, SirenStatus status, boolean disabled, Date lastUpdated) {

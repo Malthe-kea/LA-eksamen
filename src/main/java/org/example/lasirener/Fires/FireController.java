@@ -15,12 +15,12 @@ public class FireController {
 
     private final FireService fireService;
 
-    private FireController(FireService fireService){
+    public FireController(FireService fireService){
         this.fireService = fireService;
     }
 
     @GetMapping("")
-    public ResponseEntity<List<Fire>> getAllFires(){
-        return new ResponseEntity<>(fireService.getAllFires(), HttpStatus.OK);
+    public ResponseEntity<List<Fire>> getAllFires() {
+            return new ResponseEntity<>(fireService.getAllFires(), HttpStatus.OK);
     }
 }

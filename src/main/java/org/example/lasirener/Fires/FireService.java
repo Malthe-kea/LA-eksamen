@@ -10,8 +10,8 @@ public class FireService {
 
     private IFireRepository fireRepository;
 
-    public FireService(){
-
+    public FireService(IFireRepository fireRepository) {
+        this.fireRepository = fireRepository;
     }
 
     public List<Fire> getAllFires(){
