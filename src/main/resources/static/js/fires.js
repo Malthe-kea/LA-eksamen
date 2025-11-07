@@ -12,7 +12,8 @@ export async function listOfAllFires() {
         }
 
         const fires = await response.json();
-        return fires;
+            return fires;
+
     } catch (error) {
         console.error('Fejl ved hentning af brande:', error);
         return [];

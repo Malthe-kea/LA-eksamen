@@ -56,8 +56,8 @@ export function createHeader() {
     // Logo
     const logo = document.createElement("img");
     logo.className = "logo";
-    logo.src = "/pictures/logo.png";
-    logo.alt = "Site Logo";
+    logo.src = "pictures/logo.png";
+    logo.alt = "Logo";
 
     // Navigation
     const nav = document.createElement("nav");

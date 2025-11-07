@@ -1,0 +1,110 @@
+/* --- Generel reset --- */
+/* Fjerner standard margin/padding og sætter box-sizing til border-box */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Arial', sans-serif; /* Standard skrifttype */
+}
+
+/* --- Body og baggrund --- */
+body {
+    background-color: #fff7f2; /* Lys baggrund, lidt cremefarvet */
+    color: #333;               /* Standard tekstfarve */
+    line-height: 1.6;          /* Let læsbar linjeafstand */
+}
+
+/* --- Header --- */
+.site-header {
+    display: flex;                  /* Fleksibel layout */
+    align-items: center;            /* Vertikal centrering */
+    justify-content: space-between; /* Logo til venstre, navigation til højre */
+    background-color: #d32f2f;     /* Brandrød baggrund */
+    padding: 10px 20px;             /* Indvendig padding */
+    color: #fff;                    /* Tekstfarve hvid */
+    box-shadow: 0 4px 6px rgba(0,0,0,0.2); /* Let skygge for dybde */
+}
+
+/* Logo */
+.site-header .logo {
+    height: 60px; /* Størrelse på logoet */
+}
+
+/* --- Navigation --- */
+nav ul {
+    list-style: none;   /* Fjern standard bullets */
+    display: flex;      /* Lister i række */
+    gap: 20px;          /* Afstand mellem links */
+}
+
+nav ul li a {
+    color: #af3030;                /* Hvid tekst */
+    text-decoration: none;      /* Fjern understregning */
+    font-weight: bold;          /* Fed tekst */
+    transition: color 0.3s;     /* Glidende farveovergang ved hover */
+}
+
+nav ul li a:hover {
+    color: #ffeb3b; /* Gul farve ved hover (alarm-følelse) */
+}
+
+/* --- Main content container --- */
+#app {
+    max-width: 900px;     /* Maks bredde */
+    margin: 20px auto;    /* Centreret med top/bund margin */
+    padding: 0 20px;      /* Indvendig padding */
+}
+
+/* --- Liste over brande --- */
+ul {
+    list-style: none; /* Fjern standard bullets */
+    margin-top: 20px; /* Luft over listen */
+    padding: 0;       /* Fjern standard padding */
+}
+
+ul li {
+    background-color: #ffe5e5;   /* Lys rød baggrund */
+    border-left: 5px solid #d32f2f; /* Rød “brandstang” til venstre */
+    padding: 15px;               /* Indvendig padding */
+    margin-bottom: 10px;         /* Luft mellem items */
+    border-radius: 6px;          /* Bløde hjørner */
+    transition: transform 0.2s, box-shadow 0.2s; /* Små animationer ved hover */
+}
+
+ul li:hover {
+    transform: translateY(-2px);            /* Løftes let ved hover */
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1); /* Let skygge for dybde */
+}
+
+/* --- Beskeder / tekst --- */
+p {
+    font-size: 1.1rem;   /* Lidt større tekst for læsbarhed */
+    margin-top: 15px;    /* Luft over teksten */
+}
+
+/* --- Footer placeholder --- */
+footer {
+    text-align: center;
+    padding: 20px;
+    margin-top: 40px;
+    border-top: 1px solid #ccc; /* Let skillelinje */
+    color: #555;                /* Mørkegrå tekst */
+}
+
+/* --- Responsivt design --- */
+@media (max-width: 600px) {
+    .site-header {
+        flex-direction: column;  /* Stabler logo og navigation */
+        text-align: center;      /* Centrerer tekst */
+    }
+
+    nav ul {
+        flex-direction: column;  /* Navigation lodret */
+        gap: 10px;               /* Mindre afstand mellem links */
+        margin-top: 10px;        /* Luft over navigation */
+    }
+
+    .site-header .logo {
+        height: 50px; /* Mindre logo på små skærme */
+    }
+}
