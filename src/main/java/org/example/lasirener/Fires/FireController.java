@@ -3,10 +3,7 @@ package org.example.lasirener.Fires;
 import org.example.lasirener.models.Fire;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -24,5 +21,11 @@ public class FireController {
     @GetMapping("")
     public ResponseEntity<List<Fire>> getAllFires() {
             return new ResponseEntity<>(fireService.getAllFires(), HttpStatus.OK);
+    }
+
+    @PostMapping("")
+    public ResponseEntity<Fire> addFire(@RequestBody Fire fire){
+        Fire savedFire = fireService.addFire(fire);
+        return new ResponseEntity<>(savedFire, HttpStatus.CREATED);
     }
 }

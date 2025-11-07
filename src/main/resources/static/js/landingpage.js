@@ -1,84 +1,73 @@
-import { listOfAllFires } from "./fires.js";
+import { listOfAllFires, createFireForm } from "./fires.js";
 
 const app = document.getElementById("app");
 renderPage();
 
 export async function renderPage() {
-
     app.innerHTML = "";
-
-    console.log("Jeg er i renderPage");
-
-    // Append header
     const header = createHeader();
     app.appendChild(header);
 
-    // Tilføj klik-event på Fires-nav
     const firesLink = header.querySelector('a[href="#fires"]');
     firesLink.addEventListener("click", async (e) => {
-        e.preventDefault(); // undgå scroll til #fires
+        e.preventDefault();
         await showAllFires();
     });
 }
 
-// Funktion til at hente og vise alle fires
 async function showAllFires() {
-    app.innerHTML = ""; // clear previous content
-    app.appendChild(createHeader()); // beholder header
+    app.innerHTML = "";
+    app.appendChild(createHeader());
 
-    let fires;
-    try {
-        fires = await listOfAllFires();
-    } catch (err) {
-        app.innerHTML += `<p>Fejl ved hentning af brande: ${err.message}</p>`;
-        return;
-    }
+    const firesContainer = document.createElement("div");
+    firesContainer.id = "fires-container";
+    app.appendChild(firesContainer);
 
+    createFireForm("fires-container", updateFiresList); // passer updateFiresList som callback
+    await updateFiresList();
+}
+
+async function updateFiresList() {
+    const firesContainer = document.getElementById("fires-container");
+
+    const oldList = document.getElementById("fires-list");
+    if (oldList) oldList.remove();
+
+    const fires = await listOfAllFires();
     if (fires.length === 0) {
-        app.innerHTML += `<p>Ingen aktive brande lige nu.</p>`;
+        firesContainer.innerHTML += `<p>Ingen aktive brande lige nu.</p>`;
         return;
     }
 
     const list = document.createElement("ul");
+    list.id = "fires-list";
     fires.forEach(fire => {
         const li = document.createElement("li");
-        li.textContent = `ID: ${fire.id}, Location: ${fire.location}, Status: ${fire.status}`;
+        li.textContent = `ID: ${fire.id}, Latitude: ${fire.latitude}, Longitude: ${fire.longitude}, Status: ${fire.status}`;
         list.appendChild(li);
     });
 
-    app.appendChild(list);
+    firesContainer.appendChild(list);
 }
 
 export function createHeader() {
     const header = document.createElement("header");
     header.className = "site-header";
 
-    // Logo
     const logo = document.createElement("img");
-    logo.className = "logo";
-    logo.src = "pictures/logo.png";
-    logo.alt = "Logo";
+    logo.className = "logo"; logo.src = "pictures/logo.png"; logo.alt = "Logo";
 
-    // Navigation
     const nav = document.createElement("nav");
     const ul = document.createElement("ul");
-
-    const navItems = ["Home", "About", "Fires", "Contact"];
-
-    navItems.forEach(item => {
+    ["Home", "About", "Fires", "Contact"].forEach(item => {
         const li = document.createElement("li");
         const a = document.createElement("a");
-        a.href = `#${item.toLowerCase()}`;
-        a.textContent = item;
-        li.appendChild(a);
-        ul.appendChild(li);
+        a.href = `#${item.toLowerCase()}`; a.textContent = item;
+        li.appendChild(a); ul.appendChild(li);
     });
 
     nav.appendChild(ul);
-
-    // Assemble header
     header.appendChild(logo);
     header.appendChild(nav);
-
     return header;
 }

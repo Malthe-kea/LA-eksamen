@@ -18,4 +18,8 @@ public class FireService {
         return fireRepository.findAll();
     }
 
+    public Fire addFire(Fire fire){
+        return fireRepository.save(fire);
+    }
+
 }
