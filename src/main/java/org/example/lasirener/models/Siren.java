@@ -4,6 +4,8 @@ import jakarta.persistence.*;
 import org.example.lasirener.models.enums.SirenStatus;
 
 import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 public class Siren {
@@ -20,6 +22,7 @@ public class Siren {
     @Column
     double longitude;
 
+    @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     SirenStatus status;
 
@@ -28,6 +31,9 @@ public class Siren {
 
     @Column
     Date lastUpdated;
+
+    @ManyToMany(mappedBy = "")
+    private Set<Fire> fireSet = new HashSet<>();
 
     public Siren(int id, String name, double latitude, double longitude, SirenStatus status, boolean disabled, Date lastUpdated) {
         this.id = id;

@@ -1,9 +1,14 @@
 import { listOfAllFires, createFireForm } from "./fires.js";
+import { listOfAllSirens} from "./sirens.js";
+
+
 
 const app = document.getElementById("app");
 renderPage();
 
 export async function renderPage() {
+
+    console.log("jeg er i render pager")
     app.innerHTML = "";
     const header = createHeader();
     app.appendChild(header);
@@ -13,17 +18,26 @@ export async function renderPage() {
         e.preventDefault();
         await showAllFires();
     });
+
+    const sirensLink = header.querySelector('a[href="#sirens"]');
+    sirensLink.addEventListener("click", async (e) => {
+        e.preventDefault();
+        await showAllSirens()
+    })
 }
 
 async function showAllFires() {
-    app.innerHTML = "";
-    app.appendChild(createHeader());
+    // Fjern evt. tidligere content, men behold header
+    const oldContent = document.getElementById("fires-container") || document.getElementById("sirens-container") || document.getElementById("home-content");
+    if (oldContent) oldContent.remove();
 
+    // Opret container til brande
     const firesContainer = document.createElement("div");
     firesContainer.id = "fires-container";
     app.appendChild(firesContainer);
 
-    createFireForm("fires-container", updateFiresList); // passer updateFiresList som callback
+    // Opret form og liste
+    createFireForm("fires-container", updateFiresList);
     await updateFiresList();
 }
 
@@ -39,15 +53,52 @@ async function updateFiresList() {
         return;
     }
 
-    const list = document.createElement("ul");
-    list.id = "fires-list";
+    const fireList = document.createElement("ul");
+    fireList.id = "fires-list";
     fires.forEach(fire => {
         const li = document.createElement("li");
-        li.textContent = `ID: ${fire.id}, Latitude: ${fire.latitude}, Longitude: ${fire.longitude}, Status: ${fire.status}`;
-        list.appendChild(li);
+        li.textContent = `ID: ${fire.id}, Latitude: ${fire.latitude}, Longitude: ${fire.longitude}, Status: ${fire.status}, Time of registration ${fire.detectedAt}`;
+        fireList.appendChild(li);
     });
 
-    firesContainer.appendChild(list);
+    firesContainer.appendChild(fireList);
+}
+
+async function showAllSirens() {
+    // Fjern evt. tidligere content, men behold header
+    const oldContent = document.getElementById("fires-container") || document.getElementById("sirens-container") || document.getElementById("home-content");
+    if (oldContent) oldContent.remove();
+
+    // Opret container til sirener
+    const sirensContainer = document.createElement("div");
+    sirensContainer.id = "siren-container";
+    app.appendChild(sirensContainer);
+
+    // Hent og vis sirener
+    await updateSirensList();
+}
+
+async function updateSirensList(){
+    const sirensContainer = document.getElementById("siren-container");
+
+    const oldList = document.getElementById("sirens-list");
+    if (oldList) oldList.remove();
+
+    const sirens = await listOfAllSirens();
+    if (sirens.length === 0) {
+        sirensContainer.innerHTML += `<p>Ingen registrerede sirener</p>`;
+        return;
+    }
+
+    const sirensList = document.createElement("ul");
+    sirensList.id = "sirens-list";
+    sirens.forEach(siren => {
+        const li = document.createElement("li");
+        li.textContent = `ID: ${siren.id}, Latitude: ${siren.latitude}, Longitude: ${siren.longitude}, Status: ${siren.status}, Disabled: ${siren.disabled}`;
+        sirensList.appendChild(li);
+    });
+
+    sirensContainer.appendChild(sirensList);
 }
 
 export function createHeader() {
@@ -59,7 +110,7 @@ export function createHeader() {
 
     const nav = document.createElement("nav");
     const ul = document.createElement("ul");
-    ["Home", "About", "Fires", "Contact"].forEach(item => {
+    ["Home", "About", "Fires", "Contact", "Sirens"].forEach(item => {
         const li = document.createElement("li");
         const a = document.createElement("a");
         a.href = `#${item.toLowerCase()}`; a.textContent = item;
