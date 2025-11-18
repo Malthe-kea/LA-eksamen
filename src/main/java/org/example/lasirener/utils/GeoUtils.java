@@ -1,16 +1,16 @@
 package org.example.lasirener.utils;
 
 import org.example.lasirener.models.Location;
+import org.springframework.stereotype.Component;
 
+@Component
 public class GeoUtils {
     static final int EARTH_RADIUS_KM = 6371;
 
     public GeoUtils() {
     }
 
-
-    //TODO fiks denne metode
-      static double calculateDistanceKM(Location loc1, Location loc2){
+    public double calculateDistanceKM(Location loc1, Location loc2){
           double lat1 = Math.toRadians(loc1.getLatitude());
           double lon1 = Math.toRadians(loc1.getLongitude());
           double lat2 = Math.toRadians(loc2.getLatitude());

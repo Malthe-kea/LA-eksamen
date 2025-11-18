@@ -32,4 +32,10 @@ public class SirenController {
         return new ResponseEntity<>(savedSiren, HttpStatus.CREATED);
 
     }
-}
+        @DeleteMapping("/{id}")
+        public ResponseEntity<String> deleteSiren(@PathVariable int id) {
+            sirenService.removeSiren(id);
+            return ResponseEntity.ok("Siren with id " + id + " has been removed.");
+        }
+    }
+

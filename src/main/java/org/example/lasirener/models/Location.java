@@ -13,7 +13,7 @@ public class Location {
     @Column(nullable = false)
     double latitude;
 
-    public Location(int latitude, int longitude) {
+    public Location(double latitude, double longitude) {
         this.latitude = latitude;
         this.longitude = longitude;
     }
