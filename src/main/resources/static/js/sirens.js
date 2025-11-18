@@ -16,7 +16,6 @@ export async function listOfAllSirens() {
     }
 }
 
-// --- Hjælpefunktion til labels ---
 function createLabel(text) {
     const label = document.createElement('label');
     label.textContent = text;
@@ -101,3 +100,23 @@ export function createSirenForm(containerId, onSuccess) {
         }
     });
 }
+
+export async function deleteSiren(id) {
+    try {
+        const response = await fetch(`http://localhost:8080/api/v1/sirens/${id}`, {
+            method: "DELETE"
+        });
+
+        if (!response.ok) {
+            throw new Error("Kunne ikke slette sirenen");
+        }
+
+        const result = await response.text();
+        console.log(result);
+        alert(result); // valgfrit
+    } catch (error) {
+        console.error(error);
+        alert("Fejl ved sletning af sirene");
+    }
+}
+

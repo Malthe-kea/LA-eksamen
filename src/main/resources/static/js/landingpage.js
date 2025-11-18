@@ -1,5 +1,5 @@
 import { listOfAllFires, createFireForm, updateFireStatus } from "./fires.js";
-import { listOfAllSirens, createSirenForm} from "./sirens.js";
+import { listOfAllSirens, createSirenForm, deleteSiren} from "./sirens.js";
 
 
 
@@ -74,6 +74,25 @@ async function updateFiresList() {
     fires.forEach(fire => {
         const li = document.createElement("li");
 
+        // --- STATUS CIRCLE ---
+        const statusCircle = document.createElement("span");
+        statusCircle.style.display = "inline-block";
+        statusCircle.style.width = "12px";
+        statusCircle.style.height = "12px";
+        statusCircle.style.borderRadius = "50%";
+        statusCircle.style.marginRight = "8px";
+
+        if (fire.status === "ACTIVE") {
+            statusCircle.style.backgroundColor = "red";
+        } else if (fire.status === "CLOSED") {
+            statusCircle.style.backgroundColor = "green";
+        } else {
+            statusCircle.style.backgroundColor = "gray"; // fallback
+        }
+
+        li.appendChild(statusCircle);
+
+        // --- FIELDS ---
         const fields = [
             {label: 'ID', value: fire.id},
             {label: 'Latitude', value: fire.latitude},
@@ -99,7 +118,7 @@ async function updateFiresList() {
             li.appendChild(fieldDiv);
         });
 
-        // Dropdown til status opdatering
+        // --- STATUS DROPDOWN ---
         const statusSelect = document.createElement("select");
         ["ACTIVE", "CLOSED"].forEach(status => {
             const option = document.createElement("option");
@@ -109,7 +128,7 @@ async function updateFiresList() {
             statusSelect.appendChild(option);
         });
 
-        // Opdater-knap
+        // --- UPDATE BUTTON ---
         const updateBtn = document.createElement("button");
         updateBtn.textContent = "Opdater";
 
@@ -166,7 +185,7 @@ async function showAllSirens() {
 
 
 
-async function updateSirensList(){
+async function updateSirensList() {
     const sirensContainer = document.getElementById("siren-container");
 
     const oldList = document.getElementById("sirens-list");
@@ -180,14 +199,50 @@ async function updateSirensList(){
 
     const sirensList = document.createElement("ul");
     sirensList.id = "sirens-list";
+
     sirens.forEach(siren => {
         const li = document.createElement("li");
-        li.textContent = `ID: ${siren.id}, Latitude: ${siren.latitude}, Longitude: ${siren.longitude}, Status: ${siren.status}, Disabled: ${siren.disabled}`;
+
+        // --- STATUS CIRCLE ---
+        const statusCircle = document.createElement("span");
+        statusCircle.style.display = "inline-block";
+        statusCircle.style.width = "12px";
+        statusCircle.style.height = "12px";
+        statusCircle.style.borderRadius = "50%";
+        statusCircle.style.marginRight = "10px";
+
+        if (siren.status === "SAFE") {
+            statusCircle.style.backgroundColor = "green";
+        } else if (siren.status === "ALERT") {
+            statusCircle.style.backgroundColor = "red";
+        } else {
+            statusCircle.style.backgroundColor = "gray"; // fallback
+        }
+
+        // --- TEXT ---
+        const text = document.createElement("span");
+        text.textContent = `Name: ${siren.name}, ID: ${siren.id}, Latitude: ${siren.latitude}, Longitude: ${siren.longitude}, Status: ${siren.status}, Disabled: ${siren.disabled} `;
+
+        // --- DELETE BUTTON ---
+        const deleteBtn = document.createElement("button");
+        deleteBtn.textContent = "Delete";
+        deleteBtn.style.marginLeft = "10px";
+        deleteBtn.onclick = async () => {
+            await deleteSiren(siren.id);
+            updateSirensList();
+        };
+
+        li.appendChild(statusCircle);
+        li.appendChild(text);
+        li.appendChild(deleteBtn);
+
         sirensList.appendChild(li);
     });
 
     sirensContainer.appendChild(sirensList);
 }
+
+
 
 export function createHeader() {
     const header = document.createElement("header");
