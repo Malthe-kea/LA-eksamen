@@ -1,4 +1,4 @@
-package org.example.lasirener.models;
+package org.example.lasirener.Fires;
 
 import jakarta.persistence.*;
 import org.example.lasirener.models.enums.FireStatus;

@@ -1,7 +1,6 @@
 package org.example.lasirener.Sirens;
 
 import jakarta.persistence.EntityNotFoundException;
-import org.example.lasirener.models.Siren;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -24,6 +23,10 @@ public class SirenService {
 
     public List<Siren> findAllSirens(){
         return sirenRepository.findAll();
+    }
+
+    public Siren addSiren (Siren siren){
+        return sirenRepository.save(siren);
     }
 
 

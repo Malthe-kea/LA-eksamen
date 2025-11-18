@@ -1,4 +1,4 @@
-package org.example.lasirener.models;
+package org.example.lasirener.Alarms;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;

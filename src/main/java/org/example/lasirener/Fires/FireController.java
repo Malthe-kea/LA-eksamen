@@ -1,6 +1,5 @@
 package org.example.lasirener.Fires;
 
-import org.example.lasirener.models.Fire;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;

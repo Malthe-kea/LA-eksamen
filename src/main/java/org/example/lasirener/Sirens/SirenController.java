@@ -1,13 +1,10 @@
 package org.example.lasirener.Sirens;
 
-import org.example.lasirener.models.Siren;
+import org.example.lasirener.Fires.Fire;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -26,5 +23,13 @@ public class SirenController {
     @GetMapping("")
     public ResponseEntity<List<Siren>> getAllSirens() {
         return new ResponseEntity<>(sirenService.findAllSirens(), HttpStatus.OK);
+    }
+
+    @PostMapping("")
+    public ResponseEntity<Siren> addSiren(@RequestBody Siren siren){
+
+        Siren savedSiren = sirenService.addSiren(siren);
+        return new ResponseEntity<>(savedSiren, HttpStatus.CREATED);
+
     }
 }

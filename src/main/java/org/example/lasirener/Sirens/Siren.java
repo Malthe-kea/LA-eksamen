@@ -1,6 +1,7 @@
-package org.example.lasirener.models;
+package org.example.lasirener.Sirens;
 
 import jakarta.persistence.*;
+import org.example.lasirener.Fires.Fire;
 import org.example.lasirener.models.enums.SirenStatus;
 
 import java.util.Date;
