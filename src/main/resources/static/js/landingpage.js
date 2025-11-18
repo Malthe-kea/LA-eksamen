@@ -1,4 +1,4 @@
-import { listOfAllFires, createFireForm } from "./fires.js";
+import { listOfAllFires, createFireForm, updateFireStatus } from "./fires.js";
 import { listOfAllSirens} from "./sirens.js";
 
 
@@ -27,19 +27,31 @@ export async function renderPage() {
 }
 
 async function showAllFires() {
-    // Fjern evt. tidligere content, men behold header
-    const oldContent = document.getElementById("fires-container") || document.getElementById("sirens-container") || document.getElementById("home-content");
+    // Fjern tidligere content
+    const oldContent = document.getElementById("fires-container")
+        || document.getElementById("siren-container")
+        || document.getElementById("home-content");
     if (oldContent) oldContent.remove();
 
-    // Opret container til brande
+    // Container til formularen
+    const createFireContainer = document.createElement("div");
+    createFireContainer.id = "create-fire-container";
+    app.appendChild(createFireContainer);
+
+    // 🔥 Tilføj formularen inde i containeren
+    createFireForm("create-fire-container", updateFiresList);
+
+    // Brande container
     const firesContainer = document.createElement("div");
     firesContainer.id = "fires-container";
     app.appendChild(firesContainer);
 
-    // Opret form og liste
-    createFireForm("fires-container", updateFiresList);
+
+
+    // Opdater listen
     await updateFiresList();
 }
+
 
 async function updateFiresList() {
     const firesContainer = document.getElementById("fires-container");
@@ -49,24 +61,78 @@ async function updateFiresList() {
 
     const fires = await listOfAllFires();
     if (fires.length === 0) {
-        firesContainer.innerHTML += `<p>Ingen aktive brande lige nu.</p>`;
+        firesContainer.innerHTML = `<p>Ingen aktive brande lige nu.</p>`;
         return;
     }
 
     const fireList = document.createElement("ul");
     fireList.id = "fires-list";
+
     fires.forEach(fire => {
         const li = document.createElement("li");
-        li.textContent = `ID: ${fire.id}, Latitude: ${fire.latitude}, Longitude: ${fire.longitude}, Status: ${fire.status}, Time of registration ${fire.detectedAt}`;
+
+        const fields = [
+            {label: 'ID', value: fire.id},
+            {label: 'Latitude', value: fire.latitude},
+            {label: 'Longitude', value: fire.longitude},
+            {label: 'Status', value: fire.status},
+            {label: 'Tidspunkt', value: fire.detectedAt}
+        ];
+
+        fields.forEach(f => {
+            const fieldDiv = document.createElement('div');
+            fieldDiv.classList.add('fire-field');
+
+            const labelSpan = document.createElement('span');
+            labelSpan.classList.add('fire-label');
+            labelSpan.textContent = f.label + ":";
+
+            const valueSpan = document.createElement('span');
+            valueSpan.classList.add('fire-value');
+            valueSpan.textContent = f.value;
+
+            fieldDiv.appendChild(labelSpan);
+            fieldDiv.appendChild(valueSpan);
+            li.appendChild(fieldDiv);
+        });
+
+        // Dropdown til status opdatering
+        const statusSelect = document.createElement("select");
+        ["ACTIVE", "CLOSED"].forEach(status => {
+            const option = document.createElement("option");
+            option.value = status;
+            option.textContent = status;
+            if (fire.status === status) option.selected = true;
+            statusSelect.appendChild(option);
+        });
+
+        // Opdater-knap
+        const updateBtn = document.createElement("button");
+        updateBtn.textContent = "Opdater";
+
+        updateBtn.addEventListener("click", async () => {
+            const success = await updateFireStatus(fire, statusSelect.value);
+            if (success) {
+                alert(`Brand ID ${fire.id} opdateret!`);
+                await updateFiresList();
+            } else {
+                alert(`Kunne ikke opdatere brand ID ${fire.id}`);
+            }
+        });
+
+        li.appendChild(statusSelect);
+        li.appendChild(updateBtn);
         fireList.appendChild(li);
     });
 
     firesContainer.appendChild(fireList);
 }
 
+
+
 async function showAllSirens() {
     // Fjern evt. tidligere content, men behold header
-    const oldContent = document.getElementById("fires-container") || document.getElementById("sirens-container") || document.getElementById("home-content");
+    const oldContent = document.getElementById("fires-container") || document.getElementById("siren-container") || document.getElementById("home-content");
     if (oldContent) oldContent.remove();
 
     // Opret container til sirener

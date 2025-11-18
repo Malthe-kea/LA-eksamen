@@ -90,3 +90,27 @@ export function createFireForm(containerId, onSuccess) {
         return label;
     }
 }
+
+// ✅ Funktion til at opdatere status på en brand
+export async function updateFireStatus(fire, newStatus) {
+    try {
+        const updatedFire = {
+            ...fire,
+            status: newStatus,
+            closedAt: newStatus === 'CLOSED' ? new Date().toISOString() : null
+        };
+
+        const response = await fetch(`http://localhost:8080/api/v1/fires/${fire.id}`, {
+            method: 'PUT', // skal matche din Spring Boot controller
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(updatedFire)
+        });
+
+        if (!response.ok) throw new Error(`HTTP-fejl! Status: ${response.status}`);
+        return true;
+    } catch (error) {
+        console.error(`Fejl ved opdatering af brand (id: ${fire.id}):`, error);
+        return false;
+    }
+}
+

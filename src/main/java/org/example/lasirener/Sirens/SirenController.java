@@ -32,10 +32,19 @@ public class SirenController {
         return new ResponseEntity<>(savedSiren, HttpStatus.CREATED);
 
     }
-        @DeleteMapping("/{id}")
+    @DeleteMapping("/{id}")
         public ResponseEntity<String> deleteSiren(@PathVariable int id) {
             sirenService.removeSiren(id);
             return ResponseEntity.ok("Siren with id " + id + " has been removed.");
-        }
     }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<Siren> updateSirenStatus(@PathVariable int id, @RequestBody Siren updatedSiren) {
+        updatedSiren.setId(id); // Sikrer, at id matcher path
+        Siren siren = sirenService.updateSirenStatus(updatedSiren);
+        return ResponseEntity.ok(siren);
+    }
+
+}
+
 
