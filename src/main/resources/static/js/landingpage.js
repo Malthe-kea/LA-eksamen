@@ -1,5 +1,5 @@
 import { listOfAllFires, createFireForm, updateFireStatus } from "./fires.js";
-import { listOfAllSirens} from "./sirens.js";
+import { listOfAllSirens, createSirenForm} from "./sirens.js";
 
 
 
@@ -129,13 +129,22 @@ async function updateFiresList() {
 }
 
 
-
 async function showAllSirens() {
     // Fjern evt. tidligere content, men behold header
-    const oldContent = document.getElementById("fires-container") || document.getElementById("siren-container") || document.getElementById("home-content");
-    if (oldContent) oldContent.remove();
+    const oldCreateForm = document.getElementById("create-siren-container");
+    const oldList = document.getElementById("siren-container");
+    if (oldCreateForm) oldCreateForm.remove();
+    if (oldList) oldList.remove();
 
-    // Opret container til sirener
+    // Container til oprettelsesformular
+    const createSirenContainer = document.createElement("div");
+    createSirenContainer.id = "create-siren-container";
+    app.appendChild(createSirenContainer);
+
+    // Tilføj formularen
+    createSirenForm('create-siren-container', updateSirensList);
+
+    // Container til listen af sirener
     const sirensContainer = document.createElement("div");
     sirensContainer.id = "siren-container";
     app.appendChild(sirensContainer);
@@ -143,6 +152,7 @@ async function showAllSirens() {
     // Hent og vis sirener
     await updateSirensList();
 }
+
 
 async function updateSirensList(){
     const sirensContainer = document.getElementById("siren-container");
