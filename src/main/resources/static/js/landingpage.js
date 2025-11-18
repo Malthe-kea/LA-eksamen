@@ -27,30 +27,33 @@ export async function renderPage() {
 }
 
 async function showAllFires() {
-    // Fjern tidligere content
-    const oldContent = document.getElementById("fires-container")
-        || document.getElementById("siren-container")
-        || document.getElementById("home-content");
-    if (oldContent) oldContent.remove();
+    const oldContainers = [
+        "create-fire-container",
+        "fires-container",
+        "create-siren-container",
+        "siren-container",
+        "home-content"
+    ];
+
+    oldContainers.forEach(id => {
+        const el = document.getElementById(id);
+        if (el) el.remove();
+    });
 
     // Container til formularen
     const createFireContainer = document.createElement("div");
     createFireContainer.id = "create-fire-container";
     app.appendChild(createFireContainer);
 
-    // 🔥 Tilføj formularen inde i containeren
     createFireForm("create-fire-container", updateFiresList);
 
-    // Brande container
     const firesContainer = document.createElement("div");
     firesContainer.id = "fires-container";
     app.appendChild(firesContainer);
 
-
-
-    // Opdater listen
     await updateFiresList();
 }
+
 
 
 async function updateFiresList() {
@@ -130,11 +133,19 @@ async function updateFiresList() {
 
 
 async function showAllSirens() {
-    // Fjern evt. tidligere content, men behold header
-    const oldCreateForm = document.getElementById("create-siren-container");
-    const oldList = document.getElementById("siren-container");
-    if (oldCreateForm) oldCreateForm.remove();
-    if (oldList) oldList.remove();
+    // Fjern tidligere content, men behold header
+    const oldContainers = [
+        "create-fire-container",
+        "fires-container",
+        "create-siren-container",
+        "siren-container",
+        "home-content"
+    ];
+
+    oldContainers.forEach(id => {
+        const el = document.getElementById(id);
+        if (el) el.remove();
+    });
 
     // Container til oprettelsesformular
     const createSirenContainer = document.createElement("div");
@@ -152,6 +163,7 @@ async function showAllSirens() {
     // Hent og vis sirener
     await updateSirensList();
 }
+
 
 
 async function updateSirensList(){

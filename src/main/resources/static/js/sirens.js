@@ -45,15 +45,13 @@ export function createSirenForm(containerId, onSuccess) {
     lonInput.required = true;
 
     const statusSelect = document.createElement('select');
-    ['ACTIVE', 'DISABLED'].forEach(status => {
+    ['ALERT', 'SAFE'].forEach(status => {
         const option = document.createElement('option');
         option.value = status;
         option.textContent = status;
         statusSelect.appendChild(option);
     });
 
-    const disabledCheckbox = document.createElement('input');
-    disabledCheckbox.type = 'checkbox';
 
     const submitBtn = document.createElement('button');
     submitBtn.type = 'submit';
@@ -67,7 +65,6 @@ export function createSirenForm(containerId, onSuccess) {
         createLabel('Latitude: '), latInput, document.createElement('br'),
         createLabel('Longitude: '), lonInput, document.createElement('br'),
         createLabel('Status: '), statusSelect, document.createElement('br'),
-        createLabel('Disabled: '), disabledCheckbox, document.createElement('br'),
         submitBtn
     );
 
@@ -83,7 +80,6 @@ export function createSirenForm(containerId, onSuccess) {
             latitude: parseFloat(latInput.value),
             longitude: parseFloat(lonInput.value),
             status: statusSelect.value,
-            disabled: disabledCheckbox.checked
         };
 
         try {
