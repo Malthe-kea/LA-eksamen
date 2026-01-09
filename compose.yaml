@@ -1,0 +1,82 @@
+version: "3.9"
+
+services:
+
+  # ==========================================================
+  # DATABASE (INTERN – IKKE EKSPONERET)
+  # ==========================================================
+  database:
+    image: mysql:8.0
+    container_name: la-fire-databse
+    restart: unless-stopped
+
+    environment:
+      MYSQL_DATABASE: elvang
+      MYSQL_USER: elvang
+      MYSQL_PASSWORD: elvang
+      MYSQL_ROOT_PASSWORD: root
+
+    volumes:
+      - mysql-data:/var/lib/mysql
+
+    networks:
+      - la-network
+
+
+  # ==========================================================
+  # BACKEND (SPRING BOOT – GHCR)
+  # ==========================================================
+  backend:
+    image: ghcr.io/gorillaerne/elvang-backend:latest
+    container_name: elvang-backend
+    restart: unless-stopped
+
+    depends_on:
+      - database
+
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://database:3306/elvang
+      SPRING_DATASOURCE_USERNAME: elvang
+      SPRING_DATASOURCE_PASSWORD: elvang
+      JWT_SECRET: a7f253e494d094570ebdd7d4a2249952
+      ADMIN_PASSWORD: password
+      ADMIN_EMAIL: admin@mail.com
+
+    ports:
+      - "8080:8080"
+
+    networks:
+      - elvang-network
+
+
+  # ==========================================================
+  # FRONTEND (NGINX – GHCR)
+  # ==========================================================
+  frontend:
+    image: ghcr.io/gorillaerne/elvang-frontend:latest
+    container_name: elvang-frontend
+    restart: unless-stopped
+
+    depends_on:
+      - backend
+
+    ports:
+      - "80:80"
+
+    networks:
+      - elvang-network
+
+
+# ==========================================================
+# PERSISTENT STORAGE
+# ==========================================================
+volumes:
+  mysql-data:
+
+
+# ==========================================================
+# INTERNAL NETWORK
+# ==========================================================
+networks:
+  elvang-network:
+    driver: bridge
