@@ -3,6 +3,7 @@ package org.example.lasirener.Fires;
 import jakarta.persistence.*;
 import org.example.lasirener.models.enums.FireStatus;
 
+import java.lang.reflect.Array;
 import java.util.Date;
 import java.util.List;
 @Entity
@@ -29,8 +30,7 @@ public class Fire {
     @Column(nullable = true)
     private Date closedAt;
 
-
-    //private List<Fire> activatedFires;
+    private int test;
 
 
 
